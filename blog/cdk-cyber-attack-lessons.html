@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="An insider's perspective on the 2024 CDK Global ransomware attack - lessons learned about teamwork, leadership, and resilience during a month-long crisis.">
+    <title>Inside the CDK Global Cyber Attack: What I Learned Running a War Room for a Month - The SRE Project</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="../index.html">The SRE Project</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="index.html" class="active">Blog</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <article class="blog-post">
+            <h1>Inside the CDK Global Cyber Attack: What I Learned Running a War Room for a Month</h1>
+            <p class="post-meta">January 2026 · Seth Black</p>
+
+            <div class="blog-post-content">
+                <p>On June 18, 2024, I was an SRE at CDK Global when the BlackSuit ransomware gang encrypted our systems. What followed was the most intense month of my career-16 to 18 hour days running a 24/7 war room, rebuilding servers as fast as humanly possible, and learning lessons about teamwork that no training could ever teach.</p>
+
+                <p>This isn't a technical post-mortem. You can find the public details elsewhere. This is about what I learned about teams, leadership, and what happens when 15,000 dealerships are counting on you to bring their operations back online.</p>
+
+                <h2>What the World Saw</h2>
+
+                <p>The public facts are well documented: CDK Global, which provides dealer management systems to approximately 15,000 automotive dealerships across North America, was hit by ransomware on June 18, 2024. The next day, during initial recovery efforts, we were hit again. The attack forced dealerships to revert to pen and paper. Sales stopped. Service departments couldn't pull customer history. Parts couldn't be ordered. The industry estimated losses exceeding $1 billion.</p>
+
+                <p>By July 4th, services were restored. From the outside, it looked like a two-week outage. From the inside, the recovery effort continued for weeks after that.</p>
+
+                <h2>The First Days: Chaos</h2>
+
+                <p>I won't sugarcoat it-the first days were rough. Not because people weren't working hard. Everyone was working harder than they'd ever worked. The problem was that we were pulling in different directions.</p>
+
+                <p>When you're in crisis mode, everyone has ideas. Everyone has theories about what to prioritize, what to rebuild first, how to approach the problem. In normal times, that diversity of thought is valuable. In a crisis, it can paralyze you.</p>
+
+                <p>We had competing theories about how to handle the situation. Smart people, all with valid perspectives, advocating for different approaches. Meetings ran long. Decisions got revisited. Progress was slower than it needed to be.</p>
+
+                <p>The spreadsheets were a perfect example. Every leader had ideas for tracking the recovery, so someone created a spreadsheet. Then another leader needed different information, so we had two spreadsheets. Then three. Eventually we realized the sprawl was causing confusion, so we combined them into one master sheet. But then too many people were updating it at once and it kept crashing. So they locked it down so only a few people could edit. And suddenly nobody could update their status and everything ground to a halt.</p>
+
+                <p>That's what uncoordinated crisis response looks like. Good intentions, smart people, total gridlock.</p>
+
+                <p>We were a crew trying to row a boat with everyone pulling their oar in a different direction.</p>
+
+                <h2>The Turning Point</h2>
+
+                <p>Then Sean Fretenborough stepped up.</p>
+
+                <p>Sean is a 24-year veteran of enterprise IT. He'd seen crises before. But more importantly, he understood something critical: in a crisis, a good decision made quickly beats a perfect decision made slowly.</p>
+
+                <p>He didn't claim to have all the answers. What he did was establish a clear direction and get everyone aligned. He made the calls that needed to be made. When people had concerns, he listened-briefly-then decided. And once a decision was made, it was made. We moved forward.</p>
+
+                <p>The shift was immediate. Suddenly, we weren't debating. We were executing. The war room transformed from a place of competing theories to a well-coordinated rebuild operation.</p>
+
+                <h2>What 16-Hour Days Teach You</h2>
+
+                <p>When you're running a war room for 16-18 hours a day, week after week, you learn things about yourself and your team that you can't learn any other way.</p>
+
+                <h3>1. A team rowing in the same direction is unstoppable</h3>
+
+                <p>Once we aligned, servers started coming back online faster than anyone expected. Not because we suddenly got smarter or worked harder-we were already working as hard as possible. We just stopped wasting energy on friction. Every hour of effort went directly toward recovery.</p>
+
+                <h3>2. Leadership isn't about having all the answers</h3>
+
+                <p>Sean didn't know exactly how everything would play out. Nobody did. But he made decisions with incomplete information and adjusted as we learned more. That's what leadership looks like in a crisis. Waiting for certainty means waiting too long.</p>
+
+                <h3>3. You find out who people really are</h3>
+
+                <p>Crisis strips away everything superficial. Some people who seemed like superstars crumbled under pressure. Others who had been quiet contributors became the backbone of the operation. You can't fake it when you're exhausted and the stakes are real.</p>
+
+                <h3>4. Take care of your people</h3>
+
+                <p>Nobody can sustain 18-hour days indefinitely. We learned to rotate people out, force breaks, and watch for signs of burnout. A rested engineer working 12 hours is more valuable than a burnt-out engineer making mistakes at hour 17.</p>
+
+                <h3>5. Communication is everything</h3>
+
+                <p>We had to keep leadership informed, coordinate across teams, and manage expectations-all while actually doing the work. The teams that communicated well recovered faster. The ones that went heads-down without updates created confusion and duplicate effort.</p>
+
+                <h2>The Lesson I'll Carry Forever</h2>
+
+                <p>The biggest lesson from that month wasn't technical. It wasn't about backup strategies or incident response procedures, though those matter.</p>
+
+                <p>It was this: <strong>a team that rows in the same direction can accomplish almost anything.</strong></p>
+
+                <p>Before alignment, we had talented individuals working hard but canceling each other out. After alignment, we had a coordinated force that rebuilt an enterprise platform serving 15,000 locations in record time.</p>
+
+                <p>The difference wasn't skill. It wasn't resources. It was direction.</p>
+
+                <h2>What This Means for Your Team</h2>
+
+                <p>You probably won't face a ransomware attack affecting 15,000 customers. But you will face crises. Systems will go down. Deadlines will loom. Pressure will mount.</p>
+
+                <p>When that happens, remember:</p>
+
+                <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                    <li style="margin-bottom: 0.5rem;">Get aligned first. Speed comes from coordination, not just effort.</li>
+                    <li style="margin-bottom: 0.5rem;">Someone needs to make decisions. If that's you, make them. If it's not, support the person who does.</li>
+                    <li style="margin-bottom: 0.5rem;">Debate before the crisis, execute during it.</li>
+                    <li style="margin-bottom: 0.5rem;">Take care of your team. They're the only thing that will get you through.</li>
+                </ul>
+
+                <p>The CDK cyber attack was the hardest month of my career. It was also the most formative. I learned more about what it means to be part of a team-a real team, under real pressure-than I had in my entire career before that.</p>
+
+                <p>I hope you never have to learn these lessons the way I did. But if you do find yourself in a crisis, remember: get everyone rowing in the same direction. Everything else follows from that.</p>
+
+                <p><em>- Seth Black, Co-Founder, The SRE Project</em></p>
+
+                <hr style="margin: 2rem 0; border: none; border-top: 1px solid var(--border-color);">
+
+                <p style="font-size: 0.9rem; color: var(--text-light);"><strong>Note:</strong> This post reflects my personal experience and lessons learned. It does not represent CDK Global's official position or disclose any confidential information about the incident response.</p>
+            </div>
+        </article>
+
+        <div style="margin-top: 3rem; text-align: center;">
+            <a href="index.html" class="btn btn-secondary">Back to Blog</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 The SRE Project. All rights reserved.</p>
+        <p><a href="mailto:contact@sreproject.com">contact@sreproject.com</a></p>
+    </footer>
+</body>
+</html>
