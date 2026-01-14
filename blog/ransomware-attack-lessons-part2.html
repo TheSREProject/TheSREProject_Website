@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Part 2 of surviving a ransomware attack. Hard lessons learned about legacy application recovery, backup realities, and the documentation you wish you had.">
+    <title>Surviving a Ransomware Attack Part 2: Lessons from the Enterprise Applications Group - The SRE Project</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="../index.html">The SRE Project</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="index.html" class="active">Blog</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <article class="blog-post">
+            <h1>Surviving a Ransomware Attack Part 2: Lessons from the Enterprise Applications Group</h1>
+            <p class="post-meta">January 2026 · George Milliken</p>
+
+            <div class="blog-post-content">
+                <p><em>This is Part 2 of our ransomware series. <a href="ransomware-attack-lessons.html">Part 1</a> covered the war room experience and lessons about teamwork under pressure. This post focuses on what we learned about legacy application recovery. The hard way.</em></p>
+
+                <p>Seth wrote about the war room. The 16-hour days. The team alignment that made recovery possible. All of that is true. But there's another story that needs telling: what happens when you try to restore enterprise applications that were never designed to be restored.</p>
+
+                <p>I led the Enterprise Applications recovery effort. What I learned will stay with me for the rest of my career.</p>
+
+                <h2>Day Zero: What to Shut Down, What to Preserve</h2>
+
+                <p>When the attack hit, we had seconds to make decisions that would take weeks to undo. The instinct is to isolate everything. Pull the plug. Stop the spread. That instinct is correct. But it comes with consequences nobody thinks about until they're living them.</p>
+
+                <p>Here's what we learned:</p>
+
+                <p><strong>Shut down immediately:</strong> Anything that's actively being encrypted. Anything that could spread laterally. Anything connected to critical data stores. Don't hesitate. The data you lose by shutting down fast is nothing compared to what you lose by waiting.</p>
+
+                <p><strong>Preserve if possible:</strong> Logs. Connection states. Running process information. Memory dumps if you can get them. The forensics team will need this. The recovery team will need this. You won't have time to think about it later, so think about it now. Before you're in crisis.</p>
+
+                <p><strong>Document immediately:</strong> What was running. What state it was in. What connections were active. Write it down. Take screenshots. You will not remember, and you will need this information desperately in about 72 hours.</p>
+
+                <h2>The Backup Myth</h2>
+
+                <p>Everyone thinks they have backups. Very few organizations have <em>recoverable</em> backups.</p>
+
+                <p>Here's the reality of enterprise application backups that nobody talks about: there is no such thing as a synchronized backup across an entire application stack. Your database might do point-in-time recovery. Your file systems have snapshots. Your application servers have images. But they're all on different schedules, different retention policies, different recovery mechanisms.</p>
+
+                <p>Now multiply that by every application in your portfolio.</p>
+
+                <p>A typical financial application stack might include:</p>
+
+                <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                    <li style="margin-bottom: 0.5rem;">A database with transaction logs and PITR capability</li>
+                    <li style="margin-bottom: 0.5rem;">Flat file interfaces running batch processes on their own schedule</li>
+                    <li style="margin-bottom: 0.5rem;">Integration points with HR, legal, ERP, each with their own backup windows</li>
+                    <li style="margin-bottom: 0.5rem;">Legacy components that haven't been touched in years</li>
+                    <li style="margin-bottom: 0.5rem;">Third-party connectors with their own data stores</li>
+                </ul>
+
+                <p>Unless you can magically restore every component to the exact same moment in time (and you can't), you will incur data loss. The question isn't whether you'll lose data. The question is how much and where.</p>
+
+                <h2>When to Abandon Point-in-Time Recovery</h2>
+
+                <p>Point-in-time recovery sounds great in theory. Pick a moment before the attack. Restore to that moment. Resume operations.</p>
+
+                <p>In practice, PITR only works when:</p>
+
+                <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                    <li style="margin-bottom: 0.5rem;">All components support it (they don't)</li>
+                    <li style="margin-bottom: 0.5rem;">All components can recover to the same timestamp (they can't)</li>
+                    <li style="margin-bottom: 0.5rem;">Your transaction logs are intact (attackers know to target these)</li>
+                    <li style="margin-bottom: 0.5rem;">You know exactly when the attack started (you often don't)</li>
+                </ul>
+
+                <p>There comes a moment in every major recovery when you have to make the call: stop chasing perfect recovery and fall back to your last known-good weekly or monthly backup. Yes, you'll lose more data. But you'll actually recover.</p>
+
+                <p>The organizations that recover fastest are the ones that make this call early. The ones that struggle are the ones that spend days trying to achieve perfect PITR across systems that were never designed for it.</p>
+
+                <h2>The Documentation You Wish You Had</h2>
+
+                <p>In the middle of a crisis, you will desperately need documentation that doesn't exist. Here's the minimum you need for legacy app restoration:</p>
+
+                <p><strong>As-Built Documentation:</strong> Not the architecture diagram from five years ago. The actual current state. What servers. What connections. What ports. What credentials. What dependencies. What order things need to start in.</p>
+
+                <p><strong>Offline copies:</strong> If your documentation is on a SharePoint that's also encrypted, you don't have documentation. Critical system docs need to exist offline, updated regularly, accessible when everything else is down.</p>
+
+                <p><strong>Recovery runbooks:</strong> Step-by-step procedures for restoring each application. Tested procedures. If your runbook says "restore from backup" without specifying which backup, where it is, how to access it, and what order to restore components, it's useless.</p>
+
+                <p><strong>Dependency maps:</strong> This app talks to that app which depends on this service which requires that database. You need to know the full chain. And it needs to be current.</p>
+
+                <p>If you don't have this documentation, you'll be reverse-engineering it during the crisis. That's possible. We did it. But it costs you days you don't have.</p>
+
+                <h2>Reverse Engineering What You Don't Have</h2>
+
+                <p>For legacy applications without documentation, you're going to reverse-engineer. Here's the approach that worked for us:</p>
+
+                <p><strong>Start with network captures.</strong> Before the attack, what was talking to what? Firewall logs, network flow data, packet captures if you have them. This tells you the actual dependencies, not the documented ones.</p>
+
+                <p><strong>Interview the operators.</strong> The people who actually run these systems know things that aren't written down anywhere. Pull them in. Ask them to walk through a normal day. What do they check? What do they restart when it breaks? What's the tribal knowledge?</p>
+
+                <p><strong>Trace the data flows.</strong> Follow a transaction from start to finish. What systems does it touch? In what order? What happens if one component is missing?</p>
+
+                <p><strong>Test in isolation.</strong> Bring up components one at a time. See what fails. The error messages will tell you what's missing, if you can read them. Document as you go. You're building the runbook you should have had.</p>
+
+                <p>This is slow, painful work. But it's the only way when the documentation doesn't exist.</p>
+
+                <h2>The Legacy Platform Problem</h2>
+
+                <p>Every large enterprise has them. Legacy platforms running critical business processes. Systems so old that the original vendors no longer exist. Licensing models that don't account for disaster recovery. Knowledge that walked out the door when the last expert retired.</p>
+
+                <p>In our case, we had PICK applications that were critical to operations. If you've never encountered PICK, it's a database environment dating back to the 1960s. Arcane doesn't begin to describe it.</p>
+
+                <p>These legacy systems share common traits:</p>
+
+                <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                    <li style="margin-bottom: 0.5rem;">They're unsupported but critical to operations</li>
+                    <li style="margin-bottom: 0.5rem;">Their licensing or activation is tied to specific hardware</li>
+                    <li style="margin-bottom: 0.5rem;">You can restore the data, but you can't restore the <em>ability to run</em></li>
+                    <li style="margin-bottom: 0.5rem;">The people who understood them are gone</li>
+                </ul>
+
+                <p>When you can't quickly reverse-engineer these systems in the middle of a crisis, you're looking at days of downtime. When revenue loss is measured in millions per day, that's not an abstract problem.</p>
+
+                <p>How does every organization get here? The same way. Leadership prioritizes new development over legacy sunsetting. In the moment, that decision makes sense. New capabilities. Competitive advantage. Revenue growth. The legacy stuff works, so why touch it?</p>
+
+                <p>Until the day it doesn't work, and you discover you can't bring it back.</p>
+
+                <h2>The Exception Cycle</h2>
+
+                <p>After an attack, the cyber experts tell you what you already know: these legacy systems on unsupported operating systems are a risk. They should be quarantined. They should not come back online until they're remediated or replaced.</p>
+
+                <p>Management agrees. Of course they agree. The risk is obvious. The systems will stay offline until they're properly addressed.</p>
+
+                <p>Then two weeks pass. The revenue losses mount. Every day, the pressure increases. The business units are screaming. Customers are leaving. The board is asking questions.</p>
+
+                <p>And then the exceptions start.</p>
+
+                <p>"Just this one system. Just until we can find an alternative. Just temporarily."</p>
+
+                <p>Two weeks into a recovery, with revenue hemorrhaging at millions per day, the calculus changes. Systems that were quarantined get exception approvals. The vulnerable boxes come back online because the alternative is the business grinding to a halt.</p>
+
+                <p>This is the moment that defines whether an organization actually changes, or just survives until next time.</p>
+
+                <h2>What I'd Do Differently</h2>
+
+                <p>If I could go back and prepare for this before it happened, here's what I'd prioritize:</p>
+
+                <p><strong>Document everything, offline.</strong> As-built documentation for every critical system. Printed if necessary. Stored somewhere that doesn't depend on your network being up.</p>
+
+                <p><strong>Test your restores.</strong> Not just "does the backup exist" but "can we actually bring this system back from nothing." Do it annually at minimum. Do it for your oldest, ugliest systems first.</p>
+
+                <p><strong>Know your true dependencies.</strong> Not the architecture diagram. The actual runtime dependencies. What talks to what. What fails when something is missing.</p>
+
+                <p><strong>Sunset before you have to.</strong> Every year you delay replacing that legacy system is a year of accumulated risk. The cost of replacement looks high until you compare it to the cost of not being able to recover.</p>
+
+                <p><strong>Accept that PITR is a myth for complex stacks.</strong> Plan for falling back to periodic backups. Know how much data loss you can accept. Make that decision before you're in crisis.</p>
+
+                <h2>The Real Lesson</h2>
+
+                <p>The technical lessons matter. Backups, documentation, runbooks, dependency maps. All of it matters. But the real lesson is simpler and harder:</p>
+
+                <p><strong>The systems you've been ignoring because they "just work" will be the ones that destroy you when everything is burning.</strong></p>
+
+                <p>Legacy systems don't announce when they've become unrecoverable. They just sit there, running, year after year, while the knowledge to restore them slowly disappears. The vendor goes out of business. The expert retires. The documentation gets stale. The recovery procedures go untested.</p>
+
+                <p>And then one day, you need to restore them, and you discover that you can't.</p>
+
+                <p>Don't wait for that day to find out.</p>
+
+                <p><em>- George Milliken, The SRE Project</em></p>
+
+                <div class="post-tags">
+                    <span>Tags:</span>
+                    <span class="tag">Incident Response</span>
+                    <span class="tag">Legacy Systems</span>
+                    <span class="tag">Disaster Recovery</span>
+                    <span class="tag">Backup Strategy</span>
+                    <span class="tag">Enterprise IT</span>
+                    <span class="tag">Lessons Learned</span>
+                </div>
+            </div>
+        </article>
+
+        <div style="margin-top: 3rem; text-align: center;">
+            <a href="ransomware-attack-lessons.html" class="btn btn-secondary" style="margin-right: 1rem;">Read Part 1</a>
+            <a href="index.html" class="btn btn-secondary">Back to Blog</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 The SRE Project. All rights reserved.</p>
+        <p><a href="mailto:contact@sreproject.com">contact@sreproject.com</a></p>
+    </footer>
+</body>
+</html>
