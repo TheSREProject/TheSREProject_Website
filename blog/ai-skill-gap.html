@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="AI hasn't closed the skill gap in software engineering - it's widened it while making it invisible. How code quality suffers when engineers can generate code they can't evaluate.">
+    <title>The AI Skill Gap: When Code Quality Becomes Everyone's Problem - The SRE Project</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="../index.html">The SRE Project</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="../about.html">About</a></li>
+                <li><a href="index.html" class="active">Blog</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <article class="blog-post">
+            <h1>The AI Skill Gap: When Code Quality Becomes Everyone's Problem</h1>
+            <p class="post-meta">January 2026 - Kier Fretenborough</p>
+
+            <div class="blog-post-content">
+                <h2>The Promise and the Problem</h2>
+
+                <p>Every few months, a new AI coding assistant promises to "democratize development." Junior engineers can ship like seniors. Non-technical founders can build their own MVPs. The barrier to entry has never been lower.</p>
+
+                <p>That last part is true. The barrier to entry has collapsed. But here's what nobody talks about: the barrier to quality hasn't moved at all.</p>
+
+                <p>I've spent years watching code come through reviews, deployments, and incident post-mortems. What I'm seeing now is different. We're producing more code than ever, and understanding less of it than ever. AI hasn't closed the skill gap—it's widened it while making it invisible.</p>
+
+                <h2>The Illusion of Competence</h2>
+
+                <p>The traditional skill gap was obvious. A junior engineer would write code that didn't work. They'd get stuck. They'd ask questions. The learning happened in that friction.</p>
+
+                <p>AI removes the friction without removing the gap. A junior engineer prompts Copilot, gets working code, ships it, and moves on. But "working" isn't the same as "correct." It's definitely not the same as "maintainable."</p>
+
+                <p>I reviewed a pull request recently where someone had implemented a caching layer. The code ran. Tests passed. But the implementation had no eviction policy, no size limits, and would silently consume memory until the service crashed under load. The engineer who wrote it couldn't explain why they'd chosen that approach. Because they hadn't chosen it—they'd accepted it.</p>
+
+                <p>This is the new skill gap: the distance between what AI can generate and what humans can evaluate.</p>
+
+                <h2>Code Quality Isn't Just Syntax</h2>
+
+                <p>When we talk about code quality, we're not talking about whether it compiles. We're talking about:</p>
+
+                <ul style="margin-bottom: 1.5rem; margin-left: 1.5rem;">
+                    <li style="margin-bottom: 0.5rem;">Does it handle edge cases the AI never considered?</li>
+                    <li style="margin-bottom: 0.5rem;">Will it scale under production load?</li>
+                    <li style="margin-bottom: 0.5rem;">Can the next engineer understand why it was written this way?</li>
+                    <li style="margin-bottom: 0.5rem;">Does it follow the patterns already established in this codebase?</li>
+                    <li style="margin-bottom: 0.5rem;">What happens when it fails?</li>
+                </ul>
+
+                <p>AI assistants optimize for the first thing you asked for. They don't optimize for the five things you forgot to ask about. Security considerations, resource management, error handling at system boundaries, observability hooks—these require understanding context that exists outside the prompt window.</p>
+
+                <p>The engineer who understands these concerns will use AI to accelerate their work. The engineer who doesn't will use AI to ship their blind spots faster.</p>
+
+                <h2>The Multiplication Effect</h2>
+
+                <p>Here's what keeps me up at night: AI doesn't add to your skill level. It multiplies it.</p>
+
+                <p>A senior engineer using AI produces senior-quality code faster. They know what to ask for, how to evaluate the output, and when to override the suggestion. They're using AI as a force multiplier on existing expertise.</p>
+
+                <p>A junior engineer using AI produces junior-quality code faster. They accept suggestions they don't understand, miss architectural implications, and ship technical debt at unprecedented velocity. They're multiplying zero.</p>
+
+                <p>The gap between these two outcomes is growing. Organizations that don't recognize this are accumulating fragility in their systems at a rate that would have been impossible three years ago.</p>
+
+                <h2>The Documentation Problem</h2>
+
+                <p>One underappreciated casualty is documentation—not written documentation, but the documentation that lives in engineers' heads.</p>
+
+                <p>Before AI, if you wanted to implement OAuth, you spent hours reading RFCs, studying implementations, debugging token flows. By the time you shipped, you understood OAuth. That knowledge became part of your toolkit.</p>
+
+                <p>Now you prompt AI for OAuth implementation, copy the result, and ship. When something breaks at 2 AM, you're debugging code you don't understand, written to solve a problem you never fully grasped. The incident takes three times longer to resolve because you're learning during the crisis instead of before it.</p>
+
+                <p>We're building systems we can't maintain with engineers who can't explain them. That's not a productivity gain. That's a deferred cost with compounding interest.</p>
+
+                <h2>Bridging the Gap</h2>
+
+                <p>This isn't an anti-AI argument. I use AI tools daily. But I've been doing this work long enough to know when to trust a suggestion and when to question it. That judgment came from years of making mistakes, debugging failures, and understanding systems at their foundations.</p>
+
+                <p>The path forward requires acknowledging what AI actually does: it shifts the skill requirement from "can you write this code?" to "can you evaluate this code?" The second question is harder, not easier.</p>
+
+                <p>Organizations need to invest in fundamentals more aggressively, not less. Understanding networking, systems design, failure modes, and security principles matters more when you're evaluating AI output than when you're writing code by hand. The engineer who understands why something works can spot when the AI gets it wrong.</p>
+
+                <p>Mentorship becomes more important, not less. Someone needs to teach junior engineers what questions to ask, what to look for in generated code, and how to recognize the gaps AI leaves behind. At The SRE Project, that's a core part of what we do—building the judgment that AI can't provide.</p>
+
+                <p>Code review practices need to evolve. "Does it work?" was never the right question, but now it's actively dangerous. Reviews need to probe understanding: Why this approach? What are the failure modes? What happens at scale? If the author can't answer, the code isn't ready.</p>
+
+                <h2>The Real Skill Gap</h2>
+
+                <p>The skill gap in software engineering has always been about judgment, not syntax. AI has made syntax trivial while making judgment essential.</p>
+
+                <p>Engineers who develop strong fundamentals will thrive in this environment. They'll ship faster and with higher quality because they'll use AI as a tool rather than a crutch. Engineers who skip the fundamentals will produce more code with more problems, and they won't understand why.</p>
+
+                <p>The question isn't whether AI will change software engineering. It already has. The question is whether we'll adapt our approach to developing engineers to match—or whether we'll keep pretending that faster code generation means better outcomes.</p>
+
+                <p>It doesn't. It never did. And organizations that figure this out first will have a significant advantage over those still celebrating their increased commit velocity while their production incidents multiply.</p>
+
+                <p><em>- Kier Fretenborough, Co-Founder, The SRE Project</em></p>
+
+                <div class="post-tags">
+                    <span>Tags:</span>
+                    <span class="tag">AI</span>
+                    <span class="tag">Code Quality</span>
+                    <span class="tag">Skill Gap</span>
+                    <span class="tag">Mentorship</span>
+                    <span class="tag">Software Engineering</span>
+                </div>
+            </div>
+        </article>
+
+        <div style="margin-top: 3rem; text-align: center;">
+            <a href="index.html" class="btn btn-secondary">Back to Blog</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 The SRE Project. All rights reserved.</p>
+        <p><a href="mailto:contact@sreproject.com">contact@sreproject.com</a></p>
+    </footer>
+</body>
+</html>
